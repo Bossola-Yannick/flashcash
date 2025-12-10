@@ -2,15 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Spring Boot</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-<h3>Access Denied Exception</h3>
-<div>
-    <form th:action="@{/app-logout}" method="POST">
-        <input type="submit" value="Logout"/>
-    </form>
-</div>
-<p class="error" th:text="${errorMsg}">Error</p>
+<div th:insert="~{fragments/header.html}"></div>
+<main>
+    <h3>Access Denied Exception</h3>
+    <div>
+        <form th:action="@{/app-logout}" method="POST">
+            <input type="submit" value="Logout"/>
+        </form>
+    </div>
+    <p class="error" th:text="${errorMsg}">Error</p>
+</main>
+<div th:insert="~{fragments/footer.html}"></div>
 </body>
 </html>

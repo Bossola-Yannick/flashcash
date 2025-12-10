@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta charset="UTF-8">
-    <title>Add Contact</title>
+    <title>Out Of Money</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/styleUp.css}">
@@ -11,19 +11,19 @@
 <body class="vh-100 d-flex flex-column">
 <div th:insert="~{fragments/header.html}"></div>
 <main class="d-flex flex-column flex-grow-1">
-    <h2 class="text-center mt-5">Add Contact</h2>
+    <h2 class="text-center mt-5">Add Money on your Account</h2>
     <div class="container d-flex justify-content-center mt-5 align-items-center">
-        <form th:action="@{/link/addNewLink}" th:object="${user}" method="post" class="w-50" style="width: 100%">
+        <form th:action="@{/transfer/validatOutOFMoney}" th:object="${transfer}" method="post" class="w-50" style="width: 100%">
             <div class="mb-3">
-                <label for="email" class="form-label text-center w-100">Email Contact</label>
-                <input type="text" th:field="*{email}" id="email" placeholder="Add mail Contact"
+                <label for="value" class="form-label text-center w-100">Your Iban</label>
+                <input type="number" th:field="*{value}" id="value" placeholder="Amount"
                        class="form-control">
-                <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                <p class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></p>
             </div>
 
             <div class="d-flex justify-content-center">
                 <a class="btn btn-danger btn-lg me-3" href="/">Cancel</a>
-                <input class="btn btn-valid btn-lg" type="submit" value="Add Contact">
+                <input class="btn btn-valid btn-lg" type="submit" value="Out Money">
             </div>
         </form>
     </div>

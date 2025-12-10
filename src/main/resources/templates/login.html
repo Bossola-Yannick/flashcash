@@ -4,29 +4,53 @@
     <title> Spring Boot </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/styleUp.css}">
 </head>
-<body class="vh-100 d-flex flex-column">
-<h3 class="text-center mt-5"> LOGIN PAGE </h3>
-<div class="container d-flex justify-content-center mt-5 align-items-center flex-grow-1">
-    <form action="#" th:action="@{/login}" method="post" class="w-50"
-          style="width: 100%">
-        <div class="mb-3">
-            <label for="email" class="form-label text-center w-100">Email</label>
-            <input type="text" name="email" id="email" placeholder="Email" class="form-control ">
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label text-center w-100">Password</label>
-            <input type="text" name="password" id="password" placeholder="Password" class="form-control ">
-        </div>
-        <div class="d-flex justify-content-center">
-            <a class="btn btn-danger btn-lg me-3" href="/">Cancel</a>
-            <input class="btn btn-primary btn-lg" type="submit" value="Login">
-        </div>
-    </form>
-</div>
-<p class="text-center mt-3">
-    Or create one <a href="/user/add">Create User</a>
-</p>
+<body class="vh-100 d-flex flex-column" >
+<!--insert header-->
+<div th:insert="~{fragments/header.html}"></div>
 
+
+<main class="d-flex flex-column flex-grow-1">
+    <h3 class="text-center mt-5"> LOGIN PAGE </h3>
+    <div class="container d-flex justify-content-center mt-5 align-items-center">
+        <form th:action="@{/login}" method="post" class="w-50"
+              style="width: 100%">
+            <div class="mb-3">
+                <label for="email" class="form-label text-center w-100">Email</label>
+                <input type="text" name="email" id="email" placeholder="Email" class="form-control ">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label text-center w-100">Password</label>
+                <input type="text" name="password" id="password" placeholder="Password" class="form-control ">
+            </div>
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-danger btn-lg me-3" href="/">Cancel</a>
+                <input class="btn btn-valid btn-lg" type="submit" value="Login">
+            </div>
+        </form>
+    </div>
+    <p class="text-center mt-3">
+        Or create one <a href="/user/add">Create User</a>
+    </p>
+
+    <!--// mise en place de oauth2-->
+    <hr class="my-4">
+
+    <div class="d-flex flex-column align-items-center gap-3">
+        <a class="btn btn-outline-danger w-50" th:href="@{/oauth2/authorization/google}">
+            Login with Google
+        </a>
+        <a class="btn btn-outline-dark w-50" th:href="@{/oauth2/authorization/github}">
+            Login with GitHub
+        </a>
+        <a class="btn btn-outline-primary w-50" th:href="@{/oauth2/authorization/facebook}">
+            Login with Facebook
+        </a>
+    </div>
+
+</main>
+<!--    insert footer-->
+<div class="text-bg-primary mt-3" th:insert="~{fragments/footer.html}"></div>
 </body>
 </html>

@@ -1,0 +1,28 @@
+:root {
+    /* changement de la couleur primary */
+    --bs-primary: #44276a;
+    --bs-primary-rgb: 62, 35, 96;
+}
+body{
+    background-color: #9f84d55c;
+}
+.btn-valid {
+    background-color: #44276a;
+    color: rgb(249, 250, 251);
+}
+.btn-valid:hover {
+    background-color: #7145c5;
+    color: rgb(249, 250, 250);
+}
+.btn-return{
+    background-color: #9f84d55c;
+    color: rgb(249,250,250);
+}
+.btn-return:hover{
+    background-color: #7145c5;
+    color: black;
+}
+.border-card{
+    border: 4px solid #44276a;
+    border-radius: 10px;
+}

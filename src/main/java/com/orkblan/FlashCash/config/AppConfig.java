@@ -1,5 +1,6 @@
 package com.orkblan.FlashCash.config;
 
+import com.orkblan.FlashCash.services.CustomOAuth2UserService;
 import com.orkblan.FlashCash.services.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,12 +21,15 @@ public class AppConfig {
     @Autowired
     private CustomUserService customUserService;
 
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/login", "/user/add", "/user/validate", "/css/**").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/user/add", "/user/validate", "/css/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
@@ -35,6 +39,10 @@ public class AppConfig {
                         .defaultSuccessUrl("/user/profil", true)
                         .permitAll()
                 )
+                .oauth2Login(oauth->oauth
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/user/profil", true)
+                        .userInfoEndpoint(info->info.userService(customOAuth2UserService)))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
