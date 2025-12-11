@@ -1,20 +1,19 @@
 package com.orkblan.FlashCash.controllers;
 
 import com.orkblan.FlashCash.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
 
-    @Autowired
-    private UserRepository userRepository;
 
+    private final UserRepository userRepository;
 
+    public LoginController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("login")
     public ModelAndView login() {

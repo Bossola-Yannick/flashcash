@@ -2,7 +2,6 @@ package com.orkblan.FlashCash.services;
 
 import com.orkblan.FlashCash.domain.User;
 import com.orkblan.FlashCash.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,8 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserService implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+
+    public CustomUserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email)

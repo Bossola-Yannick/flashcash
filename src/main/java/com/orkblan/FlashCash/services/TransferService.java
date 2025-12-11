@@ -5,17 +5,20 @@ import com.orkblan.FlashCash.domain.Transfer;
 import com.orkblan.FlashCash.domain.User;
 import com.orkblan.FlashCash.repositories.AccountRepository;
 import com.orkblan.FlashCash.repositories.TransferRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
 public class TransferService {
-    @Autowired
-    private TransferRepository transferRepository;
-    @Autowired
-    private AccountRepository accountRepository;
+
+    private final TransferRepository transferRepository;
+    private final AccountRepository accountRepository;
+
+    public TransferService(TransferRepository transferRepository, AccountRepository accountRepository) {
+        this.transferRepository = transferRepository;
+        this.accountRepository = accountRepository;
+    }
 
     public Double transferTaxe(Double amount){
         double valueTaxe;
@@ -26,6 +29,7 @@ public class TransferService {
 
     // transfer account flashcash User to account flashcash User linked
     public void transferUserToUser(User user,User userLinked, Account accountUser,Account accountUserLinked, Transfer transfer) {
+
         // make transfer for issuer
         Double amountWithTaxe = transferTaxe(transfer.getValue());
         Transfer transferIssuer = new Transfer();

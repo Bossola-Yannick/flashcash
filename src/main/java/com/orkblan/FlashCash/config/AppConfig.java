@@ -29,7 +29,7 @@ public class AppConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/login", "/user/add", "/user/validate", "/css/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/user/add", "/user/validate", "/css/**", "/swagger-ui/**", "/v3/api-docs/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login

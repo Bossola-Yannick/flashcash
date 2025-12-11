@@ -15,14 +15,14 @@
     <div class="container d-flex justify-content-center mt-5 align-items-center">
         <form th:action="@{/transfer/validatDeposit}" th:object="${account}" method="post" class="w-50" style="width: 100%">
             <div class="mb-3">
-                <label for="solde" class="form-label text-center w-100">Your Iban</label>
-                <input type="number" th:field="*{solde}" id="solde" placeholder="Deposit Money"
+                <label for="solde" class="form-label text-center w-100">Value</label>
+                <input type="number" th:field="*{solde}" id="solde" placeholder="0.01" step="0.01"
                        class="form-control">
                 <p class="text-danger" th:if="${#fields.hasErrors('solde')}" th:errors="*{solde}"></p>
             </div>
 
             <div class="d-flex justify-content-center">
-                <a class="btn btn-danger btn-lg me-3" href="/">Cancel</a>
+                <a class="btn btn-danger btn-lg me-3" href="/user/profil">Cancel</a>
                 <input class="btn btn-valid btn-lg" type="submit" value="Add Money">
             </div>
         </form>

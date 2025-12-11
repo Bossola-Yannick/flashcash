@@ -20,9 +20,12 @@
                        class="form-control">
                 <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
             </div>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span th:text="${errorMessage}"></span>
+            </div>
 
             <div class="d-flex justify-content-center">
-                <a class="btn btn-danger btn-lg me-3" href="/">Cancel</a>
+                <a class="btn btn-danger btn-lg me-3" href="/user/profil">Cancel</a>
                 <input class="btn btn-valid btn-lg" type="submit" value="Add Contact">
             </div>
         </form>

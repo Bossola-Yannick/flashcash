@@ -11,7 +11,7 @@ import lombok.Data;
 @Entity
 public class Link {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long link_id;
     private Long user1;
     private Long user2;

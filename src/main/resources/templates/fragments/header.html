@@ -5,8 +5,9 @@
     <!--            <button class="btn btn-info btn-lg mx-3" type="submit">Back Profil</button>-->
     <!--        </form>-->
     <!--    </div>-->
-    <h1 class="text-center p-4 flex-grow-1">Welcome to Flashcash, your solution for money's transfer !</h1>
-    <div class="d-flex flex-column justify-content-center" th:if="${#authentication.principal != 'anonymousUser'}">
+    <div class="col-2" th:if="${#authentication.principal != 'anonymousUser'}"></div>
+    <h1 class="text-center p-4 col">Welcome to Flashcash, your solution for money's transfer !</h1>
+    <div class="d-flex flex-column justify-content-center col-2" th:if="${#authentication.principal != 'anonymousUser'}">
         <div class="d-flex flex-row justify-content-between">
             <a class="btn btn-return btn-lg mx-3" href="/user/profil">My Count</a>
             <form th:action="@{/logout}" method="post">

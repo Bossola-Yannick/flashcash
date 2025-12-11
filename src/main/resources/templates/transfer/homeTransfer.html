@@ -59,7 +59,7 @@
                         <td th:text="${transfer.type}"></td>
                         <td th:text="${transfer.issuer}"></td>
                         <td th:text="${transfer.recipient}"></td>
-                        <td th:text="${transfer.value}"></td>
+                        <td th:text="${#numbers.formatDecimal(transfer.value, 1, 2)}"></td>
                     </tr>
                     </tbody>
                 </table>

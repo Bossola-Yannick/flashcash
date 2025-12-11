@@ -2,7 +2,6 @@ package com.orkblan.FlashCash.services;
 
 import com.orkblan.FlashCash.domain.User;
 import com.orkblan.FlashCash.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -12,8 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+    private final AccountService accountService;
+
+    public CustomOAuth2UserService(UserRepository userRepository, AccountService accountService) {
+        this.userRepository = userRepository;
+        this.accountService = accountService;
+    }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest)
@@ -50,7 +55,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setName(name);
             user.setPassword("OAUTH2_USER"); // valeur neutre, pas utilisée
 
+            // Save User in Bdd
             userRepository.save(user);
+
+            // Create account for User
+            accountService.initialCount(user);
         }
 
         return oauthUser;

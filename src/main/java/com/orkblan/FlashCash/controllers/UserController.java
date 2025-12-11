@@ -8,9 +8,9 @@ import com.orkblan.FlashCash.repositories.AccountRepository;
 import com.orkblan.FlashCash.repositories.LinkRepository;
 import com.orkblan.FlashCash.repositories.TransferRepository;
 import com.orkblan.FlashCash.repositories.UserRepository;
+import com.orkblan.FlashCash.services.AccountService;
 import com.orkblan.FlashCash.services.PasswordCrypt;
 import com.orkblan.FlashCash.services.UserConnected;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,21 +23,24 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordCrypt passwordCrypt;
+    private final UserRepository userRepository;
+    private final PasswordCrypt passwordCrypt;
+    private final UserConnected userConnected;
+    private final AccountRepository accountRepository;
+    private final TransferRepository transferRepository;
+    private final LinkRepository linkRepository;
+    private final AccountService accountService;
 
-    @Autowired
-    private UserConnected userConnected;
-
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private TransferRepository transferRepository;
-    @Autowired
-    private LinkRepository linkRepository;
+    public UserController(UserRepository userRepository, PasswordCrypt passwordCrypt, UserConnected userConnected, AccountRepository accountRepository, TransferRepository transferRepository, LinkRepository linkRepository, AccountService accountService) {
+        this.userRepository = userRepository;
+        this.passwordCrypt = passwordCrypt;
+        this.userConnected = userConnected;
+        this.accountRepository = accountRepository;
+        this.transferRepository = transferRepository;
+        this.linkRepository = linkRepository;
+        this.accountService = accountService;
+    }
 
     @RequestMapping("user/profil")
     public String profil(Authentication authentication, Model model) {
@@ -63,7 +66,7 @@ public class UserController {
         if (!result.hasErrors()) {
             user.setPassword(passwordCrypt.passwordCrypted(user.getPassword()));
             userRepository.save(user);
-            model.addAttribute("users", userRepository.findAll());
+            accountService.initialCount(user);
             return "redirect:/login";
         }
         return "user/add";

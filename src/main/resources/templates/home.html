@@ -9,7 +9,10 @@
 <body class="vh-100 d-flex flex-column">
 <div th:insert="~{fragments/header.html}"></div>
 <main class="flex-grow-1  d-flex flex-column justify-content-center gx-5">
-    <h3 class="text-center my-5"> HOME PAGE </h3>
+    <h3 class="text-center my-4"> HOME PAGE </h3>
+    <div class="container">
+        <img th:src="@{/images/logo.webp}" class="mx-auto d-block" alt="logo">
+    </div>
     <p class="text-center">
         <a href="/login">Login</a> OR <a href="/user/add">Create User</a>
     </p>

@@ -2,15 +2,18 @@ package com.orkblan.FlashCash.services;
 
 import com.orkblan.FlashCash.domain.User;
 import com.orkblan.FlashCash.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserConnected {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+
+    public UserConnected(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User userConnected(Authentication authentication) {
         if (authentication == null) {

@@ -8,7 +8,6 @@ import com.orkblan.FlashCash.repositories.TransferRepository;
 import com.orkblan.FlashCash.repositories.UserRepository;
 import com.orkblan.FlashCash.services.TransferService;
 import com.orkblan.FlashCash.services.UserConnected;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,22 +18,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Date;
 import java.util.List;
 
 @Controller
 public class TransferController {
 
-    @Autowired
-    private TransferRepository transferRepository;
-    @Autowired
-    private UserConnected userConnected;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TransferService transferService;
+
+    private final TransferRepository transferRepository;
+    private final UserConnected userConnected;
+    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
+    private final TransferService transferService;
+
+    public TransferController(TransferRepository transferRepository, UserConnected userConnected, AccountRepository accountRepository, UserRepository userRepository, TransferService transferService) {
+        this.transferRepository = transferRepository;
+        this.userConnected = userConnected;
+        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
+        this.transferService = transferService;
+    }
 
     @RequestMapping("transfer/homeTransfer")
     public String homeTransfer(Model model, Authentication authentication) {
@@ -60,7 +62,7 @@ public class TransferController {
             User user = userConnected.userConnected(authentication);
             Transfer transfer = new Transfer();
             Account userAccount = accountRepository.findAccountByUserid(user.getUser_id());
-            transferService.transferBankToFlashCash(user,account,userAccount, transfer);
+            transferService.transferBankToFlashCash(user, account, userAccount, transfer);
 
             return "redirect:/user/profil";
         }
@@ -75,11 +77,15 @@ public class TransferController {
     }
 
     @RequestMapping("transfer/validatOutOFMoney")
-    public String validateOutMoney(@Validated Transfer transfer, BindingResult result, Authentication authentication) {
+    public String validateOutMoney(@Validated Transfer transfer, BindingResult result, Authentication authentication, Model model) {
         if (!result.hasErrors()) {
             User user = userConnected.userConnected(authentication);
             Account account = accountRepository.findAccountByUserid(user.getUser_id());
-            transferService.transferFlashcashToBank(transfer,user,account);
+            if (account.getSolde()<transfer.getValue()){
+                model.addAttribute("errorMessage", "Insufficient amount for the transfer.");
+                return "transfer/outmoney";
+            }
+            transferService.transferFlashcashToBank(transfer, user, account);
             return "redirect:/user/profil";
         }
         return "transfer/outmoney";
@@ -90,20 +96,24 @@ public class TransferController {
     @GetMapping("transfer/payment/{id}")
     public String payment(@PathVariable Integer id, Model model) {
         model.addAttribute("transfer", new Transfer());
-        model.addAttribute("linkedUserId",id);
+        model.addAttribute("linkedUserId", id);
         return "transfer/payment";
     }
 
-    @PostMapping ("transfer/payment/{id}")
-        public String paymentToLink(@PathVariable("id") Integer id,@Validated Transfer transfer, BindingResult result, Authentication authentication){
-        if(!result.hasErrors()){
+    @PostMapping("transfer/payment/{id}")
+    public String paymentToLink(@PathVariable("id") Integer id, @Validated Transfer transfer, BindingResult result, Authentication authentication, Model model) {
+        if (!result.hasErrors()) {
             User user = userConnected.userConnected(authentication);
             Account accountUser = accountRepository.findAccountByUserid(user.getUser_id());
-            User userLinked = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid Id User Linked"+ id));
+            User userLinked = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Id User Linked" + id));
             Account accountUserLinked = accountRepository.findAccountByUserid(userLinked.getUser_id());
-            transferService.transferUserToUser(user,userLinked, accountUser, accountUserLinked, transfer);
+            if (accountUser.getSolde() * 5 / 100 < transfer.getValue()) {
+                model.addAttribute("errorMessage", "Insufficient amount for the transfer.");
+                return "transfer/payment";
+            }
+            transferService.transferUserToUser(user, userLinked, accountUser, accountUserLinked, transfer);
             return "redirect:/user/profil";
         }
         return "transfer/payment";
-        }
+    }
 }
