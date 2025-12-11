@@ -63,12 +63,39 @@ public class UserController {
 
     @PostMapping("/user/validate")
     public String validate(@Validated User user, BindingResult result, Model model) {
+        // checking if email already in bdd
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            model.addAttribute("errorMessage", "A account with this email is already existing, please login ");
+            return "user/add";
+        }
+        // checking if name is empty
+        if(user.getName().isEmpty()){
+            model.addAttribute("errorMessage", "Please enter your name  ");
+            return "user/add";
+        }
+        // checking if password is empty
+        if (user.getPassword().isEmpty()){
+            model.addAttribute("errorMessage", "Please enter a password, 8 chars, 1 uppercase, 1 lowercase and 1 special char ");
+            return "user/add";
+        }
+        // checking if email regex is ok
+        if (!user.getEmail().matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")){
+            model.addAttribute("errorMessage", "Email format not supported ");
+            return "user/add";
+        }
+        // checking if password regex is ok, min => 8 chars, 1 Maj, 1min, 1number
+        if (!user.getEmail().matches("^(?=.*[az])(?=.*[AZ])(?=.*\\d)(?=.*[@#$%^&+=]).{8,}$")){
+            model.addAttribute("errorMessage", "The password must be at least 8 chars, 1 uppercase, 1 lowercase and 1 special char");
+            return "user/add";
+        }
+
         if (!result.hasErrors()) {
             user.setPassword(passwordCrypt.passwordCrypted(user.getPassword()));
             userRepository.save(user);
             accountService.initialCount(user);
             return "redirect:/login";
         }
+        model.addAttribute("errorMessage","Error during the registration" );
         return "user/add";
     }
 
